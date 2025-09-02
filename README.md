@@ -83,8 +83,8 @@ flowchart LR
     B --> C{Generate bundle}
     C --> C1[Inject headers from templates]
     C --> C2[Copy changed SQL into release files]
-    C --> C3[Compute old->new versions (AGT/AWB)]
-    C --> C4[Emit permissions & version scripts]
+    C --> C3[Compute old to new versions (AGT/AWB)]
+    C --> C4[Emit permissions and version scripts]
     C --> D[Release Bundle (structured, versioned)]
 
     D --> E[Docker Build (Dockerfile)]
