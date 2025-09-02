@@ -80,26 +80,17 @@ The tool relies on `src/file_templates/` to enforce structure, including:
 ```mermaid
 flowchart LR
     A[Dev pushes SQL changes] --> B[CI Job: DB Release Builder]
-    B --> C{Generate bundle}
+    B --> C[Generate bundle]
     C --> C1[Inject headers from templates]
     C --> C2[Copy changed SQL into release files]
-    C --> C3[Compute old to new versions (AGT/AWB)]
-    C --> C4[Emit permissions and version scripts]
-    C --> D[Release Bundle (structured, versioned)]
+    C --> C3[Compute version numbers]
+    C --> C4[Emit permission and update scripts]
+    C --> D[Release Bundle]
 
-    D --> E[Docker Build (Dockerfile)]
+    D --> E[Docker Build]
     E --> F[Push Image to GitLab Registry]
-    F --> G[Deploy Stages / Environments]
-    G --> H[(Target Databases)]
-
-    classDef step fill:#eef,stroke:#88a,stroke-width:1px,color:#111;
-    classDef action fill:#e8fff2,stroke:#6aa84f,stroke-width:1px,color:#111;
-    classDef artifact fill:#fff7e6,stroke:#e69138,stroke-width:1px,color:#111;
-
-    class A step
-    class B,E,F,G step
-    class C,C1,C2,C3,C4 action
-    class D,H artifact
+    F --> G[Deploy Stages]
+    G --> H[Target Databases]
 ```
 
 ### ASCII fallback
