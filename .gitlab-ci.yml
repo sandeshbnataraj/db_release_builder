@@ -1,0 +1,27 @@
+build image:
+    stage: build
+    image: docker:stable
+    services:
+        - name: docker:dind
+          alias: thedockerhost
+    variables:
+        # Tell docker CLI how to talk to Docker daemon; see
+        DOCKER_HOST: tcp://thedockerhost:2375/
+        # Use the overlayfs driver for improved performance:
+        DOCKER_DRIVER: overlay2
+        DOCKER_TLS_CERTDIR: ""
+        #CONTAINER_REG: "gitlab.ilts.com:5050/snataraj/dbs-bgt"
+        CONTAINER_REG: "gitlab.ilts.com:5050/ilts/datatrak-flx/bgt/dta/dbs"
+    script:
+        # Download bash:
+        #- apk add --no-cache bash python3
+        # CHANGEME: You can use some other Docker registry though by changing the
+        #- docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY" : gitlab.ilts.com:5050
+        # if pushing to same repo
+        #- docker build -t "$CI_REGISTRY_IMAGE" :  .
+        #- docker push "$CI_REGISTRY_IMAGE"
+        # since we are pushing to another project repo we use access_token_name and access token as password
+        - docker login -u personal_acess -p J3Uz3zQ_bZQbQ4FNGpFj "$CI_REGISTRY"
+        - docker build -t "$CONTAINER_REG"/bgt_db_release_manager:1.0.0 .
+        - docker push "$CONTAINER_REG"/bgt_db_release_manager:1.0.0
+        - docker logout
